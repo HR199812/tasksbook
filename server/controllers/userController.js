@@ -47,14 +47,14 @@ const userController = {
       (err, user) => {
         if (user) {
           if (user.userphone === req.body.userphone) {
-            res.status(201).json({ message: "Welcome" });
+            res
+              .status(201)
+              .json({ message: "Welcome", userID: user._id });
           }
         } else {
-          res
-            .status(200)
-            .json({
-              message: "User does not exist.\n Please register to continue.",
-            });
+          res.status(200).json({
+            message: "User does not exist.\n Please register to continue.",
+          });
         }
       }
     );

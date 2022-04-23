@@ -1,9 +1,65 @@
+import axios from 'axios';
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+
+toast.configure();
 const CreateTask = (props) => {
+  const [task, setTask] = useState({
+    title: "",
+    category: "#Add Some Task 📌",
+    body: "",
+    filepath: "",
+  });
   function handleChange(val) {
+    toast.error("Discarding all the changes", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
     // Here, we invoke the callback with the new value
     props.onChange(val);
   }
+  const inputEvent = (e) => {
+    e.preventDefault();
+    const name = e.target.name;
+    const value = e.target.value;
+    setTask((preValue) => {
+      return { ...preValue, [name]: value };
+    });
+  };
+
+  const CreateTask = (e) => {
+    e.preventDefault();
+    e.preventDefault();
+    if (task.title === "" || task.category === "" || task.body === "") {
+      toast.error("All The Fields are required", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    } else {
+      console.log(task);
+      try {
+        axios
+          .post(`http://localhost:3000/Task/addTaskForCurrentUser`, {
+            authorId: "6263ef70dbf079dd17968ed1",
+            ...task,
+          })
+          .then((res) => {
+            if (res.status == 201) {
+              toast.success(res.data.message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+              });
+            } else {
+              toast.error(res.data.message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
   return (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -29,7 +85,7 @@ const CreateTask = (props) => {
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
-                  for="Title"
+                  htmlFor="Title"
                 >
                   Title
                 </label>
@@ -38,13 +94,16 @@ const CreateTask = (props) => {
                   id="Title"
                   type="text"
                   placeholder="Title"
+                  name="title"
+                  value={task.title}
+                  onChange={inputEvent}
                 />
               </div>
               <div className="flex items-center flex-row ...">
                 <div className="mb-4 mr-4">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
-                    for="Files"
+                    htmlFor="Files"
                   >
                     Upload Files(if any)
                   </label>
@@ -57,31 +116,38 @@ const CreateTask = (props) => {
                 <div className="mb-4 float-right">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
-                    for="Category"
+                    htmlFor="Category"
                   >
                     Select Category
                   </label>
-                  <select className="block appearance-none text-white w-full bg-blue-500 hover:bg-blue-700 border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                  <select
+                    name="category"
+                    value={task.category}
+                    onChange={inputEvent}
+                    className="block appearance-none text-white w-full bg-blue-500 hover:bg-blue-700 border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                  >
                     <option>Select Filter</option>
-                    <option>Option 2</option>
-                    <option>Option 3</option>
+                    <option>Client Visit</option>
+                    <option>Sprint Review</option>
+                    <option>Team Meeting</option>
+                    <option>Developers Daily Meet</option>
                   </select>
                 </div>
               </div>
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
-                  for="Body"
+                  htmlFor="Body"
                 >
                   Body
                 </label>
                 <textarea
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="Body"
-                >
-                    #Add Some Task
-                    📌
-                </textarea>
+                  name="body"
+                  value={task.body}
+                  onChange={inputEvent}
+                ></textarea>
               </div>
             </div>
             {/*footer*/}
@@ -96,7 +162,7 @@ const CreateTask = (props) => {
               <button
                 className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={() => handleChange(false)}
+                onClick={CreateTask}
               >
                 Save Changes
               </button>

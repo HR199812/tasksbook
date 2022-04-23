@@ -26,6 +26,7 @@ const signin = () => {
           .post(`http://localhost:3000/User/getUser`, user)
           .then((res) => {
             if (res.status == 201) {
+              console.log(res);
               setTimeout(() => {
                 router.push("/tasks");
               }, 100);

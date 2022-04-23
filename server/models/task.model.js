@@ -22,14 +22,13 @@ const tasksSchema = new schema(
       required: true,
       trim: true,
     },
-    catergory: {
-      type: Stering,
+    category: {
+      type: String,
       required: true,
       trim: true,
     },
     filepath: {
-      type: Stering,
-      required: true,
+      type: String,
       trim: true,
     },
   },
