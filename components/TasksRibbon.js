@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import CreateTask from "./CreateTask";
 
 const TasksRibbon = () => {
-  const [showCreateTaskModal, setCreateTaskModal] = useState(false);
+  const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
 
+  function handleChange(newValue) {
+    setShowCreateTaskModal(newValue);
+  }
   return (
     <>
       <nav className="mt-16 mx-auto my-bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800">
@@ -11,7 +14,7 @@ const TasksRibbon = () => {
         <ul className="flex">
           <li className="mr-6">
             <button
-              onClick={() => ShowCreateComponent(true)}
+              onClick={() => setShowCreateTaskModal(true)}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
             >
               Create New Task
@@ -52,7 +55,9 @@ const TasksRibbon = () => {
         </ul>
         {/* </div> */}
       </nav>
-      {showCreateTaskModal ? <CreateTask /> : nulls}
+      {showCreateTaskModal ? (
+        <CreateTask value={setShowCreateTaskModal} onChange={handleChange} />
+      ) : null}
     </>
   );
 };
