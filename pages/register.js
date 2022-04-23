@@ -1,41 +1,50 @@
 import { useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import axios from "axios";
+import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PhoneInput from "react-phone-number-input";
-import 'react-phone-number-input/style.css'
+import "react-phone-number-input/style.css";
 
 toast.configure();
 const register = () => {
+  const router = useRouter();
+
   const [userphone, setUserphone] = useState("");
-  const [username, setUsername] = useState("");
 
   const RegisterUser = (e) => {
     e.preventDefault();
-    if (userphone === "" && username === "") {
-      toast.error("All The Fields are required", {
+    if (userphone === "") {
+      toast.error("Please enter a phone number", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else {
       try {
         const user = {
-          name: user.username,
-          pass: user.userpass,
-          usermail: user.usermail,
+          userphone: userphone,
+          userpassword: userphone,
         };
-        // axios
-        //   .post(`${serverString}admin/login`, user)
-        //   .then((res) => {
-        //     console.log(res);
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
-
-        toast.success("Success", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
+        axios
+          .post(`http://localhost:3000/User/addUser`, user)
+          .then((res) => {
+            if (res.status == 200) {
+              setTimeout(() => {
+                router.push("/login");
+              }, 1000);
+              toast.success(res.data.message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+              });
+            } else {
+              toast.error(res.data.message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } catch (error) {
         console.log(error);
       }
@@ -61,19 +70,6 @@ const register = () => {
             </div>
             <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
               <form>
-                {/* <!-- User Name */}
-                <div className="mb-6">
-                  <input
-                    type="text"
-                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    id="exampleFormControlInput2"
-                    placeholder="Full Name"
-                    name="username"
-                    value={username}
-                    onChange={setUsername}
-                  />
-                </div>
-
                 <div className="mb-6">
                   <PhoneInput
                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -94,9 +90,9 @@ const register = () => {
                     Register
                   </button>
                   <p className="text-sm font-semibold mt-2 pt-1 mb-0">
-                    Already have an account?
+                    Already have an account?&nbsp;&nbsp;
                     <Link href="/login">
-                      <a className="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out">
+                      <a className="cursor-pointer text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out">
                         Login
                       </a>
                     </Link>

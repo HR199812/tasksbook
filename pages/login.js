@@ -1,51 +1,46 @@
 import { useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import axios from "axios";
+import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 toast.configure();
 const signin = () => {
-  const [siginPhone, setSiginPhone] = useState("");
-  const [siginInfo, setSigninInfo] = useState({
-    userphone: "",
-    userpass: "",
-  });
-
-  const inputEvent = (e) => {
-    const value = e.target.value;
-    const name = e.target.name;
-
-    setSigninInfo((preValue) => {
-      return {
-        ...preValue,
-        [name]: value,
-      };
-    });
-  };
+  const router = useRouter();
+  const [userPhone, setUserPhone] = useState("");
 
   const loginUser = (e) => {
     e.preventDefault();
-    if (siginInfo.username === "" || siginInfo.userpass === "") {
-      toast.error("Both The Fields are required", {
+    if (userPhone === "") {
+      toast.error("Phone Number is Required", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else {
       try {
-        const user = { name: siginInfo.username, pass: siginInfo.userpass };
-        // axios
-        //   .post(`${serverString}admin/login`, user)
-        //   .then((res) => {
-        //     console.log(res);
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
-
-        toast.success("Success", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
+        const user = { userphone: userPhone };
+        axios
+          .post(`http://localhost:3000/User/getUser`, user)
+          .then((res) => {
+            if (res.status == 201) {
+              setTimeout(() => {
+                router.push("/tasks");
+              }, 100);
+              toast.success(res.data.message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+              });
+            } else {
+              toast.error(res.data.message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } catch (error) {
         console.log(error);
       }
@@ -75,10 +70,11 @@ const signin = () => {
                 {/* <!-- Phone Number input --> */}
                 <div className="mb-6">
                   <PhoneInput
+                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     placeholder="Enter phone number"
                     defaultCountry="IN"
-                    onChange={setSiginPhone}
-                    value={siginPhone}
+                    onChange={setUserPhone}
+                    value={userPhone}
                   />
                 </div>
 
@@ -91,9 +87,9 @@ const signin = () => {
                     Login
                   </button>
                   <p className="text-sm font-semibold mt-2 pt-1 mb-0">
-                    Don't have an account?
+                    Don't have an account?&nbsp;&nbsp;
                     <Link href="/register">
-                      <a className="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out">
+                      <a className="cursor-pointer text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out">
                         Register
                       </a>
                     </Link>
