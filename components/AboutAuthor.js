@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-const CreateTask = (props) => {
+const AboutAuthor = (props) => {
   function handleChange(val) {
     // Here, we invoke the callback with the new value
     props.onChange(val);
@@ -13,7 +12,7 @@ const CreateTask = (props) => {
             {/*header*/}
             <div className="flex items-center justify-between p-5 border-b border-solid border-slate-200 rounded-t">
               <h3 className="text-3xl w-full text-center font-semibold">
-                Add New Task
+                About Author
               </h3>
               <button
                 className="p-1 bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -29,59 +28,42 @@ const CreateTask = (props) => {
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
-                  for="Title"
+                  for="FullName"
                 >
-                  Title
+                  Full Name
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="Title"
+                  id="FullName"
                   type="text"
-                  placeholder="Title"
+                  placeholder="FullName"
                 />
               </div>
-              <div className="flex items-center flex-row ...">
-                <div className="mb-4 mr-4">
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                    for="Files"
-                  >
-                    Upload Files(if any)
-                  </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="Files"
-                    type="file"
-                  />
-                </div>
-                <div className="mb-4 float-right">
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                    for="Category"
-                  >
-                    Select Category
-                  </label>
-                  <select className="block appearance-none text-white w-full bg-blue-500 hover:bg-blue-700 border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                    <option>Select Filter</option>
-                    <option>Option 2</option>
-                    <option>Option 3</option>
-                  </select>
-                </div>
-              </div>
-              <div className="mb-4">
+              <div className="mb-4 mr-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
-                  for="Body"
+                  for="PhoneNumber"
                 >
-                  Body
+                  Phone Number
                 </label>
-                <textarea
+                <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="Body"
+                  id="PhoneNumber"
+                  type="text"
+                />
+              </div>
+              <div className="mb-4 mr-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  for="EMail"
                 >
-                    #Add Some Task
-                    📌
-                </textarea>
+                  E-Mail
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="EMail"
+                  type="text"
+                />
               </div>
             </div>
             {/*footer*/}
@@ -108,4 +90,4 @@ const CreateTask = (props) => {
     </>
   );
 };
-export default CreateTask;
+export default AboutAuthor;
