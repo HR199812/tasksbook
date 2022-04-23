@@ -26,9 +26,11 @@ const signin = () => {
           .post(`http://localhost:3000/User/getUser`, user)
           .then((res) => {
             if (res.status == 201) {
-              console.log(res);
               setTimeout(() => {
-                router.push("/tasks");
+                router.push({
+                  pathname: "/tasks",
+                  query: { userId: res.data.userID },
+                });
               }, 100);
               toast.success(res.data.message, {
                 position: toast.POSITION.BOTTOM_RIGHT,

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -34,11 +34,10 @@ const CreateTask = (props) => {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else {
-      console.log(task);
       try {
         axios
           .post(`http://localhost:3000/Task/addTaskForCurrentUser`, {
-            authorId: "6263ef70dbf079dd17968ed1",
+            authorId: `${props.userId}`,
             ...task,
           })
           .then((res) => {
@@ -46,6 +45,7 @@ const CreateTask = (props) => {
               toast.success(res.data.message, {
                 position: toast.POSITION.BOTTOM_RIGHT,
               });
+              handleChange(false);
             } else {
               toast.error(res.data.message, {
                 position: toast.POSITION.BOTTOM_RIGHT,

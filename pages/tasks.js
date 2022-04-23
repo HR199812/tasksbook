@@ -1,14 +1,42 @@
 import Head from "next/head";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useState, useEffect } from "react";
 import TasksRibbon from "../components/TasksRibbon";
 import ShowTask from "../components/ShowTask";
+import axios from "axios";
+
 const tasks = () => {
+  const router = useRouter();
+  const id = router.query.userId;
+
   const [showTaskModal, setShowTaskModal] = useState(false);
+
+  let [tasks, setTasks] = useState([]);
+
+  let [taskInfo, setTaskInfo] = useState([]);
 
   function handleChange(newValue) {
     setShowTaskModal(newValue);
   }
 
+  function carDataAndShow(show, taskData) {
+    setShowTaskModal(show);
+    setTaskInfo(taskData);
+  }
+
+  async function getAllTasksForCurrentUser() {
+    try {
+      let allTasks = await axios.get(
+        `http://localhost:3000/Task/getAllTasksForUser/${id}`
+      );
+      setTasks(allTasks.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  useEffect(() => {
+    getAllTasksForCurrentUser();
+  }, []);
   return (
     <>
       <Head>
@@ -18,41 +46,56 @@ const tasks = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="container my-12 mx-auto px-4 md:px-12">
-        <TasksRibbon />
+        <TasksRibbon userId={id}/>
         <div className="flex flex-wrap -mx-1 lg:-mx-4">
           {/* <!-- Column --> */}
-          <div className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
-            {/* <!-- Article --> */}
-            <article onClick={() => setShowTaskModal(true)} className="overflow-hidden cursor-pointer rounded-lg shadow-lg">
-              <a>
-                <img
-                  alt="Placeholder"
-                  className="block h-auto w-full"
-                  src="https://picsum.photos/600/400/?random"
-                />
-              </a>
-
-              <header
-                className="flex items-center justify-between leading-tight p-2 md:p-4"
-              >
-                <h1 className="text-lg">
-                  <a
-                    className="no-underline hover:underline text-black"
-                    href="#"
+          {tasks.map((task, index) => {
+            return (
+              <>
+                <div className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
+                  {/* <!-- Article --> */}
+                  <article
+                    onClick={() => carDataAndShow(true, task)}
+                    className="overflow-hidden cursor-pointer rounded-lg shadow-lg"
                   >
-                    Article Title
-                  </a>
-                </h1>
-                <p className="text-grey-darker text-sm">11/1/19</p>
-              </header>
-            </article>
-            {/* <!-- END Article --> */}
-          </div>
+                    <a>
+                      <img
+                        alt="Placeholder"
+                        className="block h-auto w-full"
+                        src="https://picsum.photos/600/400/?random"
+                      />
+                    </a>
+
+                    <header className="flex items-center justify-between leading-tight p-2 md:p-4">
+                      <h1 className="text-lg">
+                        <a
+                          className="no-underline hover:underline text-black"
+                          href="#"
+                        >
+                          {task.title}
+                        </a>
+                      </h1>
+                      {/* <p className="text-grey-darker text-sm">{task.createdAt.getMonth()}/{task.createdAt.getDate()}/{task.createdAt.getFullYear()}</p> */}
+                      <p className="text-grey-darker text-sm">
+                        {task.createdAt}
+                      </p>
+                    </header>
+                  </article>
+                  {/* <!-- END Article --> */}
+                </div>
+              </>
+            );
+          })}
+
           {/* <!-- END Column --> */}
         </div>
       </div>
       {showTaskModal ? (
-        <ShowTask value={setShowTaskModal} onChange={handleChange} />
+        <ShowTask
+          value={setShowTaskModal}
+          taskData={taskInfo}
+          onChange={handleChange}
+        />
       ) : null}
     </>
   );

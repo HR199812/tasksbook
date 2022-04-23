@@ -23,8 +23,8 @@ const taskController = {
     }
   },
   getAllTasks: async (req, res) => {
-    const allUsers = await user.find({});
-    res.status(200).json(allUsers);
+    const allTasks = await TASK.find({ authorId: `${req.params.id}`}, {"title":1, "body":1, "category":1, "createdAt":1});
+    res.status(200).json(allTasks);
   },
   test: (req, res) => {
     res.send("All Ok");
