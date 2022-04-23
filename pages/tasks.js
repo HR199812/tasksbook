@@ -1,6 +1,15 @@
+import React, { useState } from "react";
 import TasksRibbon from "../components/TasksRibbon";
+import ShowTask from "../components/ShowTask";
+
 
 const tasks = () => {
+  const [showTaskModal, setShowTaskModal] = useState(false);
+
+  function handleChange(newValue) {
+    setShowTaskModal(newValue);
+  }
+
   return (
     <>
       <div className="container my-12 mx-auto px-4 md:px-12">
@@ -9,7 +18,10 @@ const tasks = () => {
           {/* <!-- Column --> */}
           <div className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
             {/* <!-- Article --> */}
-            <article className="overflow-hidden rounded-lg shadow-lg">
+            <article
+              className="overflow-hidden rounded-lg shadow-lg"
+              onClick={() => setShowTaskModal(true)}
+            >
               <a href="#">
                 <img
                   alt="Placeholder"
@@ -56,6 +68,9 @@ const tasks = () => {
           {/* <!-- END Column --> */}
         </div>
       </div>
+      {showTaskModal ? (
+        <ShowTask value={setShowTaskModal} onChange={handleChange} />
+      ) : null}
     </>
   );
 };
