@@ -11,9 +11,6 @@ const CreateTask = (props) => {
     filepath: "",
   });
   function handleChange(val) {
-    toast.error("Discarding all the changes", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
     // Here, we invoke the callback with the new value
     props.onChange(val);
   }
@@ -164,7 +161,7 @@ const CreateTask = (props) => {
                 type="button"
                 onClick={CreateTask}
               >
-                Save Changes
+                Create
               </button>
             </div>
           </div>
