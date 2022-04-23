@@ -107,7 +107,79 @@
   height: 1em;
   margin-left: 0.5rem;
 }
+.navbar {
+  height: fit-content;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+}
+.navbar ul {
+  display: block;
+  list-style-type: none;
+}
 
+.navbar ul li {
+  float: right;
+  margin: 10px;
+  box-shadow: 4px 4px 15px grey;
+  border-radius: 20px;
+  background-color: #2563eb;
+  color: white;
+  padding: 1.2%;
+  cursor: pointer;
+}
+
+.logo {
+  margin: 10px;
+  color: #2563eb !important;
+  padding: 1%;
+  font-size: xx-large !important;
+  font-weight: bolder;
+  color: white;
+  float: left;
+  text-shadow: 4px 4px 15px grey;
+}
+.floatDivOne {
+  width: 40%;
+  float: left;
+}
+.floatDivTwo {
+  width: 60%;
+  float: left;
+}
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.errorMessage {
+  /* background-image: url(../public/notfound.png); */
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.error h1,
+.error h2,
+.error p {
+  text-align: center;
+}
+.error a {
+  background-color: #2563eb !important;
+  color: white;
+  border-radius: 20px;
+  padding: 1%;
+  border-width: 0px;
+}
+.error a:hover {
+  background-color: white !important;
+  color: #2563eb;
+  border-color: #2563eb;
+  border-radius: 20px;
+  border-width: 2px;
+  padding: 1%;
+}
 @media (max-width: 600px) {
   .grid {
     width: 100%;
