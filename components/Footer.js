@@ -53,7 +53,7 @@ const Footer = () => {
           <hr />
           <br />
           <div>
-            <p className="text-center">&#169; Copyright 2022 | BlogTheme.com</p>
+            <p className="text-center">&#169; Copyright 2022 | TasksManager.com</p>
           </div>
         </div>
       </div>
