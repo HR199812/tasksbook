@@ -1,9 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import JSZip, { JSZipUtils } from "jszip";
 
 toast.configure();
 const CreateTask = (props) => {
+  const [file, setFile] = useState();
+
   const [task, setTask] = useState({
     title: "",
     category: "#Add Some Task 📌",
@@ -18,6 +21,23 @@ const CreateTask = (props) => {
     e.preventDefault();
     const name = e.target.name;
     const value = e.target.value;
+
+    if (e.target.name === "filepath") {
+      var zip = new JSZip();
+      var count = 0;
+
+      for (let i = 0; i < e.target.files.length; i++) {
+        zip.file(e.target.files[i].name, e.target.files[i]);
+        count++;
+
+        if (count == e.target.files.length) {
+          zip.generateAsync({ type: "blob" }).then(function (content) {
+            setFile(content);
+          });
+        }
+      }
+    }
+
     setTask((preValue) => {
       return { ...preValue, [name]: value };
     });
@@ -32,11 +52,27 @@ const CreateTask = (props) => {
       });
     } else {
       try {
+        // const formData = new FormData();
+        // formData.append("authorId", props.userId);
+        // formData.append("title", task.title);
+        // formData.append("body", task.body);
+        // formData.append("category", task.category);
+        // formData.append(
+        //   "filepath",
+        //   "E:/Projects/NextJs/tasksmanager/public/files"
+        // );
+        // formData.append("file", file);
+
         axios
-          .post(`http://localhost:3000/Task/addTaskForCurrentUser`, {
-            authorId: `${props.userId}`,
-            ...task,
-          })
+          .post(
+            `http://localhost:3000/Task/addTaskForCurrentUser`,
+            // formData
+            {
+              authorId: `${props.userId}`,
+              ...task,
+              // file: file,
+            }
+          )
           .then((res) => {
             if (res.status == 201) {
               toast.success(res.data.message, {
@@ -109,6 +145,10 @@ const CreateTask = (props) => {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     id="Files"
                     type="file"
+                    name="filepath"
+                    value={task.filepath}
+                    onChange={inputEvent}
+                    multiple
                   />
                 </div>
                 <div className="mb-4 float-right">

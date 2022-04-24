@@ -37,7 +37,7 @@ const tasks = (props) => {
       let taskData = await axios.get(
         `http://localhost:3000/Task/getAllTasksForUser/${id}`
       );
-
+      console.log(taskData);
       setTasks(taskData.data);
       setFilteredTasks(taskData.data);
       setShouldRecallApi(false);
@@ -149,7 +149,7 @@ const tasks = (props) => {
         <ShowTask
           value={setShowTaskModal}
           taskData={taskInfo}
-          user={id}
+          apiCall={setShouldRecallApi}
           onChange={handleChange}
         />
       ) : null}

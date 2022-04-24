@@ -5,6 +5,7 @@ const taskController = {
   //@route POST /user/add
   //@access Admin
   addTask: async (req, res) => {
+    console.log(req.body);
     const { authorId, title, category, body, filepath } = req.body;
     const taskCreate = await TASK.create({
       authorId,
@@ -25,7 +26,7 @@ const taskController = {
   getAllTasks: async (req, res) => {
     const allTasks = await TASK.find(
       { authorId: `${req.params.id}` },
-      { title: 1, body: 1, category: 1, createdAt: 1 }
+      { title: 1, body: 1, category: 1, createdAt: 1, _id: 1 }
     );
     res.status(200).json(allTasks);
   },
