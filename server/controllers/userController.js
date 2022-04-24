@@ -48,10 +48,10 @@ const userController = {
         if (user) {
           // Session Initiated
           req.session.user = user;
-          res.status(201).json({ message:"Welcome" });
+          res.status(201).json({ validUser: true });
         } else {
           res.status(200).json({
-            message:"User not found!\nPlease Register."
+            validUser: false,
           });
         }
       }

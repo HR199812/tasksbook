@@ -27,12 +27,14 @@ const signin = () => {
           .post(`http://localhost:3000/User/getUser`, user)
           .then((res) => {
             if (res.status == 201) {
-              router.push("/tasks");
-              toast.success(res.data.message, {
+              setTimeout(() => {
+                router.push("/tasks");
+              }, 100);
+              toast.success("Welcome", {
                 position: toast.POSITION.BOTTOM_RIGHT,
               });
             } else {
-              toast.error(res.data.message, {
+              toast.error("User Not Found", {
                 position: toast.POSITION.BOTTOM_RIGHT,
               });
             }
