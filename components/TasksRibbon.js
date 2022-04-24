@@ -3,9 +3,18 @@ import CreateTask from "./CreateTask";
 
 const TasksRibbon = (props) => {
   const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   function handleChange(newValue) {
     setShowCreateTaskModal(newValue);
+  }
+
+  function applyFilter(filterVal) {
+    props.passFilterState(filterVal);
+  }
+  function applSearchVal(e) {
+    // e.preventDefault();
+    props.passSearchState(searchValue);
   }
   return (
     <>
@@ -29,11 +38,14 @@ const TasksRibbon = (props) => {
                     placeholder="Search"
                     aria-label="Search"
                     aria-describedby="button-addon2"
+                    value={searchValue}
+                    onChange={setSearchValue}
                   />
                   <button
                     className="btn inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex items-center"
                     type="button"
                     id="button-addon2"
+                    onClick={() => applSearchVal}
                   >
                     <svg
                       aria-hidden="true"
@@ -56,18 +68,25 @@ const TasksRibbon = (props) => {
             </div>
           </li>
           <li className="basis-1/5">
-            <select className="block cursor-pointer appearance-none text-white w-full bg-blue-500 hover:bg-blue-700 border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-            <option>Select Filter</option>
-                    <option>Client Visit</option>
-                    <option>Sprint Review</option>
-                    <option>Team Meeting</option>
-                    <option>Developers Daily Meet</option>
+            <select
+              onChange={(e)=>applyFilter(e.target.value)}
+              className="block cursor-pointer appearance-none text-white w-full bg-blue-500 hover:bg-blue-700 border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option>Select Filter</option>
+              <option>Client Visit</option>
+              <option>Sprint Review</option>
+              <option>Team Meeting</option>
+              <option>Developers Daily Meet</option>
             </select>
           </li>
         </ul>
       </nav>
       {showCreateTaskModal ? (
-        <CreateTask value={setShowCreateTaskModal} userId={props.userId} onChange={handleChange} />
+        <CreateTask
+          value={setShowCreateTaskModal}
+          userId={props.userId}
+          onChange={handleChange}
+        />
       ) : null}
     </>
   );

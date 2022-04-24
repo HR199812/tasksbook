@@ -1,5 +1,8 @@
 import { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+
+toast.configure();
 const CreateTask = (props) => {
   const [task, setTask] = useState({
     title: `${props.taskData.title}`,
@@ -11,10 +14,32 @@ const CreateTask = (props) => {
     props.onChange(val);
   }
 
-  function UpdateTask(e){
-    e.preventDefault();
-    console.log(props.taskData._id);
-
+  async function UpdateTask(val) {
+    try {
+      let updatedValue = await axios
+        .put(
+          `http://localhost:3000/Task/updateTaskForUser/${props.taskData._id}`,
+          task
+        )
+        .then((res) => {
+          if (res.status == 200) {
+            toast.success(res.data.message, {
+              position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            handleChange(false);
+            props.apiCall(val);
+          } else {
+            toast.error(res.data.message, {
+              position: toast.POSITION.BOTTOM_RIGHT,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const inputEvent = (e) => {
@@ -127,7 +152,7 @@ const CreateTask = (props) => {
               <button
                 className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={UpdateTask}
+                onClick={() => UpdateTask(true)}
               >
                 Save Changes
               </button>

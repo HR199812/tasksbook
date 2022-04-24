@@ -4,6 +4,7 @@ const taskController = require("../controllers/tasksController");
 const taskRouter = require("express").Router();
 
 taskRouter.post("/addTaskForCurrentUser", taskController.addTask);
+taskRouter.put("/updateTaskForUser/:id", taskController.updateTask);
 taskRouter.get("/getAllTasksForUser/:id", taskController.getAllTasks);
 // taskRouter.get("/test", taskController.test);
 

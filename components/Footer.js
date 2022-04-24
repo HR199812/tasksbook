@@ -15,17 +15,17 @@ const Footer = () => {
           <div className="text-center w-full flex flex-row ...">
             <div className="basis-1/2">
               <Link href="/">
-                <a>Home</a>
+                <a className="text-blue-500 hover:text-blue-700 underline ...">Home</a>
               </Link>
             </div>
             <div className="basis-1/2">
               <Link href="/about">
-                <a>About</a>
+                <a className="text-blue-500 hover:text-blue-700 underline ...">About</a>
               </Link>
             </div>
             <div className="basis-1/2">
               <Link href="/signin">
-                <a>Sign In</a>
+                <a className="text-blue-500 hover:text-blue-700 underline ...">Sign In</a>
               </Link>
             </div>
           </div>
@@ -53,7 +53,9 @@ const Footer = () => {
           <hr />
           <br />
           <div>
-            <p className="text-center">&#169; Copyright 2022 | TasksManager.com</p>
+            <p className="text-center">
+              &#169; Copyright 2022 | TasksManager.com
+            </p>
           </div>
         </div>
       </div>

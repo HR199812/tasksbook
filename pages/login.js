@@ -26,12 +26,12 @@ const signin = () => {
           .post(`http://localhost:3000/User/getUser`, user)
           .then((res) => {
             if (res.status == 201) {
-              setTimeout(() => {
-                router.push({
-                  pathname: "/tasks",
-                  query: { userId: res.data.userID },
-                });
-              }, 100);
+              // setTimeout(() => {
+              // }, 100);
+              router.push({
+                pathname: "/tasks",
+                query: { userId: res.data.userID },
+              });
               toast.success(res.data.message, {
                 position: toast.POSITION.BOTTOM_RIGHT,
               });

@@ -9,9 +9,17 @@ const tasks = () => {
   const router = useRouter();
   const id = router.query.userId;
 
+  //   State Variable to be passed to child components
   const [showTaskModal, setShowTaskModal] = useState(false);
+  const [filter, setFilter] = useState("");
+  let [searchedTasks, setSearchedTasks] = useState("");
+  let [shouldRecallApi, setShouldRecallApi] = useState(false);
 
+  //   State Variables for current Component
   let [tasks, setTasks] = useState([]);
+  let [filteredTasks, setFilteredTasks] = useState([]);
+
+  console.log(filter);
 
   let [taskInfo, setTaskInfo] = useState([]);
 
@@ -26,17 +34,59 @@ const tasks = () => {
 
   async function getAllTasksForCurrentUser() {
     try {
-      let allTasks = await axios.get(
+      let taskData = await axios.get(
         `http://localhost:3000/Task/getAllTasksForUser/${id}`
       );
-      setTasks(allTasks.data);
+
+      setTasks(taskData.data);
+      setFilteredTasks(taskData.data);
+      setShouldRecallApi(false);
     } catch (err) {
       console.log(err);
     }
   }
+
+  function filterTaskCards() {
+    setFilteredTasks(tasks);
+    if (filter != "Select Filter") {
+      let filteredData = tasks.filter((task) => {
+        if (task.category == filter) return task;
+      });
+      setFilteredTasks(filteredData);
+    }
+  }
+  function filterSearchTaskCards() {
+    setFilteredTasks(tasks);
+    if (searchedTasks != "") {
+      let filteredData = tasks.filter((task) => {
+        if (
+          task.category.includes(searchedTasks) ||
+          task.body.includes(searchedTasks) ||
+          task.title.includes(searchedTasks)
+        )
+          return task;
+      });
+      setFilteredTasks(filteredData);
+    }
+  }
+
+  //   UseEffect for All Tasks of the logged in user
   useEffect(() => {
     getAllTasksForCurrentUser();
   }, []);
+
+  //   UseEffect for filter Values
+  useEffect(() => {
+    filterTaskCards();
+  }, [filter]);
+  //   UseEffect for searched Values
+  useEffect(() => {
+    filterSearchTaskCards();
+  }, [searchedTasks]);
+  //   UseEffect for searched Values
+  useEffect(() => {
+    getAllTasksForCurrentUser();
+  }, [shouldRecallApi]);
   return (
     <>
       <Head>
@@ -46,44 +96,47 @@ const tasks = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="container my-12 mx-auto px-4 md:px-12">
-        <TasksRibbon userId={id}/>
+        <TasksRibbon
+          userId={id}
+          passFilterState={setFilter}
+          passSearchState={setSearchedTasks}
+        />
         <div className="flex flex-wrap -mx-1 lg:-mx-4">
           {/* <!-- Column --> */}
-          {tasks.map((task, index) => {
+          {filteredTasks.map((task, index) => {
             return (
-              <>
-                <div className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
-                  {/* <!-- Article --> */}
-                  <article
-                    onClick={() => carDataAndShow(true, task)}
-                    className="overflow-hidden cursor-pointer rounded-lg shadow-lg"
-                  >
-                    <a>
-                      <img
-                        alt="Placeholder"
-                        className="block h-auto w-full"
-                        src="https://picsum.photos/600/400/?random"
-                      />
-                    </a>
+              <div
+                className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3"
+                key={index}
+              >
+                {/* <!-- Article --> */}
+                <article
+                  onClick={() => carDataAndShow(true, task)}
+                  className="overflow-hidden cursor-pointer rounded-lg shadow-lg"
+                >
+                  <a>
+                    <img
+                      alt="Placeholder"
+                      className="block h-auto w-full"
+                      src="https://picsum.photos/600/400/?random"
+                    />
+                  </a>
 
-                    <header className="flex items-center justify-between leading-tight p-2 md:p-4">
-                      <h1 className="text-lg">
-                        <a
-                          className="no-underline hover:underline text-black"
-                          href="#"
-                        >
-                          {task.title}
-                        </a>
-                      </h1>
-                      {/* <p className="text-grey-darker text-sm">{task.createdAt.getMonth()}/{task.createdAt.getDate()}/{task.createdAt.getFullYear()}</p> */}
-                      <p className="text-grey-darker text-sm">
-                        {task.createdAt}
-                      </p>
-                    </header>
-                  </article>
-                  {/* <!-- END Article --> */}
-                </div>
-              </>
+                  <header className="flex items-center justify-between leading-tight p-2 md:p-4">
+                    <h1 className="text-lg">
+                      <a
+                        className="no-underline hover:underline text-black"
+                        href="#"
+                      >
+                        {task.title}
+                      </a>
+                    </h1>
+                    {/* <p className="text-grey-darker text-sm">{task.createdAt.getMonth()}/{task.createdAt.getDate()}/{task.createdAt.getFullYear()}</p> */}
+                    <p className="text-grey-darker text-sm">{task.createdAt}</p>
+                  </header>
+                </article>
+                {/* <!-- END Article --> */}
+              </div>
             );
           })}
 
@@ -94,6 +147,7 @@ const tasks = () => {
         <ShowTask
           value={setShowTaskModal}
           taskData={taskInfo}
+          apiCall={setShouldRecallApi}
           onChange={handleChange}
         />
       ) : null}

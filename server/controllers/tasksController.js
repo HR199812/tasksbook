@@ -23,8 +23,32 @@ const taskController = {
     }
   },
   getAllTasks: async (req, res) => {
-    const allTasks = await TASK.find({ authorId: `${req.params.id}`}, {"title":1, "body":1, "category":1, "createdAt":1});
+    const allTasks = await TASK.find(
+      { authorId: `${req.params.id}` },
+      { title: 1, body: 1, category: 1, createdAt: 1 }
+    );
     res.status(200).json(allTasks);
+  },
+  updateTask: async (req, res) => {
+    const task = await TASK.updateOne(
+      { _id: `${req.params.id}` },
+      {
+        $set: {
+          title: req.body.title,
+          body: req.body.body,
+          category: req.body.category,
+        },
+      }
+    );
+    if (task) {
+      console.log(task);
+      res.status(200).json({
+        message: "Record Updated Successfully",
+      });
+    } else {
+      res.status(400);
+      throw new Error("Invalid user data");
+    }
   },
   test: (req, res) => {
     res.send("All Ok");
