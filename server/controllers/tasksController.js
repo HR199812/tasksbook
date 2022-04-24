@@ -5,7 +5,6 @@ const taskController = {
   //@route POST /user/add
   //@access Admin
   addTask: async (req, res) => {
-    console.log(req.body);
     const { authorId, title, category, body, filepath } = req.body;
     const taskCreate = await TASK.create({
       authorId,
@@ -42,7 +41,6 @@ const taskController = {
       }
     );
     if (task) {
-      console.log(task);
       res.status(200).json({
         message: "Record Updated Successfully",
       });

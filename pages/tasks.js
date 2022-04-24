@@ -19,8 +19,6 @@ const tasks = (props) => {
   let [tasks, setTasks] = useState([]);
   let [filteredTasks, setFilteredTasks] = useState([]);
 
-  console.log(filter);
-
   let [taskInfo, setTaskInfo] = useState([]);
 
   function handleChange(newValue) {
@@ -37,7 +35,6 @@ const tasks = (props) => {
       let taskData = await axios.get(
         `http://localhost:3000/Task/getAllTasksForUser/${id}`
       );
-      console.log(taskData);
       setTasks(taskData.data);
       setFilteredTasks(taskData.data);
       setShouldRecallApi(false);
@@ -159,7 +156,7 @@ const tasks = (props) => {
 
 export const getServerSideProps = requireAuthentication((context) => {
   const { req } = context;
-  console.log("req.session in getserverside props ******", req.session.user);
+  // console.log("req.session in getserverside props ******", req.session.user);
   return {
     props: {
       id: req.session.user._id,

@@ -45,7 +45,6 @@ const CreateTask = (props) => {
     const name = e.target.name;
     const value = e.target.value;
     setTask((preValue) => {
-      console.log(preValue);
       return { ...preValue, [name]: value };
     });
   };
