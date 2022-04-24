@@ -134,7 +134,7 @@ const tasks = (props) => {
                       </a>
                     </h1>
                     {/* <p className="text-grey-darker text-sm">{task.createdAt.getMonth()}/{task.createdAt.getDate()}/{task.createdAt.getFullYear()}</p> */}
-                    <p className="text-grey-darker text-sm">{task.createdAt}</p>
+                    <p className="text-grey-darker text-sm">{task.createdAt.split("T")[0]}</p>
                   </header>
                 </article>
                 {/* <!-- END Article --> */}
