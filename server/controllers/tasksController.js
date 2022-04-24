@@ -31,7 +31,7 @@ const taskController = {
   },
   updateTask: async (req, res) => {
     const task = await TASK.updateOne(
-      { _id: `${req.params.id}` },
+      { _id: `${req.body.id}` },
       {
         $set: {
           title: req.body.title,

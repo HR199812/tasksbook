@@ -5,6 +5,7 @@ const userRouter = express.Router();
 
 userRouter.post("/addUser", userController.addUser);
 userRouter.post("/getUser", userController.getUser);
-// userRouter.get("/getUser", userController.test);
+userRouter.get("/getSession", userController.getSession);
+userRouter.get("/logout", userController.logoutUser);
 
 module.exports = userRouter;

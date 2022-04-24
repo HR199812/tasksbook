@@ -42,6 +42,7 @@ const CreateTask = (props) => {
               toast.success(res.data.message, {
                 position: toast.POSITION.BOTTOM_RIGHT,
               });
+              props.call(true);
               handleChange(false);
             } else {
               toast.error(res.data.message, {

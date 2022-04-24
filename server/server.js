@@ -4,6 +4,7 @@ const articleRouter = require("./routes/taskRoute");
 const cors = require("cors");
 const express = require("express");
 const next = require("next");
+const session = require('express-session')
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -18,6 +19,14 @@ app
     server.use(
       express.urlencoded({
         extended: true,
+      })
+    );
+    server.use(
+      session({
+        secret: "keyboard cat",
+        resave: false,
+        saveUninitialized: true,
+        // cookie: { secure: true },
       })
     );
 

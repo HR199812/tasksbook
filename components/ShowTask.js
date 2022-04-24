@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 toast.configure();
 const CreateTask = (props) => {
   const [task, setTask] = useState({
+    id: props.userId,
     title: `${props.taskData.title}`,
     category: `${props.taskData.category}`,
     body: `${props.taskData.body}`,
@@ -17,10 +18,7 @@ const CreateTask = (props) => {
   async function UpdateTask(val) {
     try {
       let updatedValue = await axios
-        .put(
-          `http://localhost:3000/Task/updateTaskForUser/${props.taskData._id}`,
-          task
-        )
+        .put(`http://localhost:3000/Task/updateTaskForUser`, task)
         .then((res) => {
           if (res.status == 200) {
             toast.success(res.data.message, {

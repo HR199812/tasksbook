@@ -46,18 +46,24 @@ const userController = {
       },
       (err, user) => {
         if (user) {
-          if (user.userphone === req.body.userphone) {
-            res
-              .status(201)
-              .json({ message: "Welcome", userID: user._id });
-          }
+          // Session Initiated
+          req.session.user = user;
+          res.status(201).json({ validUser: true });
         } else {
           res.status(200).json({
-            message: "User does not exist.\n Please register to continue.",
+            validUser: false,
           });
         }
       }
     );
+  },
+  getSession: (req, res) => {
+    res.send(req.session);
+  },
+  logoutUser: (req, res) => {
+    req.session.destroy(function (err) {
+      res.redirect("/");
+    });
   },
   test: (req, res) => {
     res.send("All Ok");

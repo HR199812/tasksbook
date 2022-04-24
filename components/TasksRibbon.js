@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CreateTask from "./CreateTask";
 
 const TasksRibbon = (props) => {
   const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [shouldCallApi, setShouldCallApi] = useState("");
 
   function handleChange(newValue) {
     setShowCreateTaskModal(newValue);
@@ -13,9 +14,13 @@ const TasksRibbon = (props) => {
     props.passFilterState(filterVal);
   }
   function applSearchVal(e) {
-    // e.preventDefault();
+    e.preventDefault();
     props.passSearchState(searchValue);
   }
+
+  useEffect(() => {
+    props.passApiCall(shouldCallApi);
+  }, [shouldCallApi]);
   return (
     <>
       <nav className="mt-16 mx-auto my-bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800">
@@ -39,13 +44,13 @@ const TasksRibbon = (props) => {
                     aria-label="Search"
                     aria-describedby="button-addon2"
                     value={searchValue}
-                    onChange={setSearchValue}
+                    onChange={(event) => setSearchValue(event.target.value)}
                   />
                   <button
                     className="btn inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex items-center"
                     type="button"
                     id="button-addon2"
-                    onClick={() => applSearchVal}
+                    onClick={applSearchVal}
                   >
                     <svg
                       aria-hidden="true"
@@ -69,7 +74,7 @@ const TasksRibbon = (props) => {
           </li>
           <li className="basis-1/5">
             <select
-              onChange={(e)=>applyFilter(e.target.value)}
+              onChange={(e) => applyFilter(e.target.value)}
               className="block cursor-pointer appearance-none text-white w-full bg-blue-500 hover:bg-blue-700 border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
             >
               <option>Select Filter</option>
@@ -86,6 +91,7 @@ const TasksRibbon = (props) => {
           value={setShowCreateTaskModal}
           userId={props.userId}
           onChange={handleChange}
+          call={setShouldCallApi}
         />
       ) : null}
     </>

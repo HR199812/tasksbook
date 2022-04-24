@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 
-const schema = mongoose.Schema;
-// ObjectId = Schema.ObjectId;
+const schema = mongoose.Schema,
+  ObjectId = schema.ObjectId;
 
 const tasksSchema = new schema(
   {
     authorId: {
+      // type: String,
       // type: ObjectId, // here you set the author ID
       type: mongoose.Schema.Types.ObjectId,
       // from the Author colection,
