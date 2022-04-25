@@ -48,6 +48,13 @@ const signin = () => {
     }
   };
 
+  const handleKeypress = (e) => {
+    //it triggers by pressing the enter key
+    if (e.keyCode === 13) {
+      loginUser();
+    }
+  };
+
   return (
     <>
       <Head>
@@ -77,6 +84,11 @@ const signin = () => {
                     defaultCountry="IN"
                     onChange={setUserPhone}
                     value={userPhone}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        loginUser(e);
+                      }
+                    }}
                   />
                 </div>
 
