@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import download from "downloadjs";
 
 toast.configure();
 const CreateTask = (props) => {
@@ -11,10 +12,24 @@ const CreateTask = (props) => {
     body: `${props.taskData.body}`,
   });
 
+  const [file, setFile] = useState();
+
   function handleChange(val) {
     props.onChange(val);
   }
 
+  async function getFileForTheTask() {
+    try {
+      await axios
+        .get(`http://localhost:3000/Task/getFileForTask/${props.taskData._id}`)
+        .then((res) => {
+          console.log(res);
+          setFile(res.data);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }
   async function UpdateTask(val) {
     try {
       await axios
@@ -48,6 +63,14 @@ const CreateTask = (props) => {
       return { ...preValue, [name]: value };
     });
   };
+
+  const downloadFile = () => {
+    download(file, `attatchment.zip`);
+  };
+
+  useEffect(() => {
+    getFileForTheTask();
+  }, []);
   return (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -93,13 +116,23 @@ const CreateTask = (props) => {
                     className="block text-gray-700 text-sm font-bold mb-2"
                     htmlFor="Files"
                   >
-                    Upload Files(if any)
+                    Attachments(if any)
                   </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="Files"
-                    type="file"
-                  />
+                  {file ? (
+                    <button
+                      onClick={downloadFile}
+                      class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+                    >
+                      <svg
+                        class="fill-current w-4 h-4 mr-2"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+                      </svg>
+                      <span>Download</span>
+                    </button>
+                  ) : null}
                 </div>
                 <div className="mb-4 float-right">
                   <label

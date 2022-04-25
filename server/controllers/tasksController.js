@@ -1,5 +1,7 @@
 const TASK = require("../models/task.model");
 const conn = require("../auth/mongoConnection");
+const fs = require("fs");
+
 const taskController = {
   //@desc Add a new Admin
   //@route POST /user/add
@@ -18,7 +20,7 @@ const taskController = {
     if (taskCreate) {
       try {
         req.files.file.mv(
-          `${filepath}/${req.files.file.name}_${taskCreate._id}.zip`,
+          `${filepath}${req.files.file.name}_${taskCreate._id}.zip`,
           (err) => {
             if (err) {
               console.log("File upload failed");
@@ -43,6 +45,34 @@ const taskController = {
       { title: 1, body: 1, category: 1, createdAt: 1, _id: 1 }
     );
     res.status(200).json(allTasks);
+  },
+  getFile: async (req, res) => {
+    try {
+      console.log(req.params);
+      const directoryPath = process.env.FILE_PATH;
+      console.log(directoryPath);
+      fs.readdir(directoryPath, function (err, files) {
+        if (err) {
+          res.status(500).send({
+            message: "Unable to scan files!",
+          });
+        }
+
+        try {
+          files.forEach((file) => {
+            console.log(file);
+            if (file.includes(req.params.id)) {
+              // console.log(directoryPath + file);
+              res.download(directoryPath + file);
+            }
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    } catch (err) {
+      res.status(400).json(err);
+    }
   },
   updateTask: async (req, res) => {
     const task = await TASK.updateOne(
