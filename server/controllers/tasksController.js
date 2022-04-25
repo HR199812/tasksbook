@@ -5,18 +5,33 @@ const taskController = {
   //@route POST /user/add
   //@access Admin
   addTask: async (req, res) => {
-    const { authorId, title, category, body, filepath } = req.body;
+    console.log(req.files);
+    console.log(req.body);
+    const { authorId, title, category, body } = req.body;
+    const filepath = process.env.FILE_PATH;
     const taskCreate = await TASK.create({
       authorId,
       title,
       category,
       body,
-      filepath,
     });
     if (taskCreate) {
-      res.status(201).json({
-        message: "New Task Created Successfully",
-      });
+      try {
+        req.files.file.mv(
+          `${filepath}/${req.files.file.name}_${taskCreate._id}.zip`,
+          (err) => {
+            if (err) {
+              console.log("File upload failed");
+            }
+            console.log("File Uploaded");
+          }
+        );
+        res.status(201).json({
+          message: "New Task Created Successfully",
+        });
+      } catch (err) {
+        console.log(err);
+      }
     } else {
       res.status(400);
       throw new Error("Invalid user data");

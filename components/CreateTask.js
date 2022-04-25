@@ -11,7 +11,6 @@ const CreateTask = (props) => {
     title: "",
     category: "#Add Some Task 📌",
     body: "",
-    filepath: "",
   });
   function handleChange(val) {
     // Here, we invoke the callback with the new value
@@ -52,26 +51,27 @@ const CreateTask = (props) => {
       });
     } else {
       try {
-        // const formData = new FormData();
-        // formData.append("authorId", props.userId);
-        // formData.append("title", task.title);
-        // formData.append("body", task.body);
-        // formData.append("category", task.category);
-        // formData.append(
-        //   "filepath",
-        //   "E:/Projects/NextJs/tasksmanager/public/files"
-        // );
-        // formData.append("file", file);
-
+        const formData = new FormData();
+        formData.append("authorId", props.userId);
+        formData.append("title", task.title);
+        formData.append("body", task.body);
+        formData.append("category", task.category);
+        formData.append("file", file);
+        console.log(file);
         axios
           .post(
             `http://localhost:3000/Task/addTaskForCurrentUser`,
-            // formData
+            formData,
             {
-              authorId: `${props.userId}`,
-              ...task,
-              // file: file,
+              headers: {
+                "Contetnt-Type": "multipart/form-data",
+              },
             }
+            // {
+            //   authorId: `${props.userId}`,
+            //   ...task,
+            //   // file: file,
+            // }
           )
           .then((res) => {
             if (res.status == 201) {
@@ -146,7 +146,6 @@ const CreateTask = (props) => {
                     id="Files"
                     type="file"
                     name="filepath"
-                    value={task.filepath}
                     onChange={inputEvent}
                     multiple
                   />

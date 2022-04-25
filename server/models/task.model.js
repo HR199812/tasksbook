@@ -28,10 +28,6 @@ const tasksSchema = new schema(
       required: true,
       trim: true,
     },
-    filepath: {
-      type: String,
-      trim: true,
-    },
   },
   { timestamps: true }
 );
