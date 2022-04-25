@@ -9,7 +9,6 @@ import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import Navbar from "../components/Navbar";
 
-
 toast.configure();
 const register = () => {
   const router = useRouter();
@@ -31,7 +30,7 @@ const register = () => {
         axios
           .post(`http://localhost:3000/User/addUser`, user)
           .then((res) => {
-            if (res.status == 200) {
+            if (res.status == 201) {
               setTimeout(() => {
                 router.push("/login");
               }, 1000);
@@ -81,6 +80,11 @@ const register = () => {
                     name="userphone"
                     value={userphone}
                     onChange={setUserphone}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        RegisterUser(e);
+                      }
+                    }}
                   />
                 </div>
 
