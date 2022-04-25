@@ -8,6 +8,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Setup your .env file
 - Replace 'Mongo_Atlas_URI' string in .env with your MongoDb atlas/compass string.
+- Replace 'FILE_PATH' string in .env with your Folder path where you want to save the files in your system/server.
 ---------------------------------------------------------------------------------------------------------------------------------
 
 ## Getting Started
