@@ -9,7 +9,7 @@ const CreateTask = (props) => {
 
   const [task, setTask] = useState({
     title: "",
-    category: "#Add Some Task 📌",
+    category: "",
     body: "",
   });
   function handleChange(val) {

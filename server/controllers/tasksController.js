@@ -8,7 +8,7 @@ const taskController = {
   addTask: async (req, res) => {
     console.log(req.files);
     console.log(req.body);
-    const { authorId, title, category, body } = req.body;
+    const { authorId, title, body, category } = req.body;
     const filepath = process.env.FILE_PATH;
     const taskCreate = await TASK.create({
       authorId,
@@ -18,13 +18,15 @@ const taskController = {
     });
     if (taskCreate) {
       try {
-        const file = req.files.file;
-        file.mv(`${filepath}${file.name}_${taskCreate._id}.zip`, (err) => {
-          if (err) {
-            console.log("File upload failed");
-          }
-          console.log("File Uploaded");
-        });
+        if (req.files) {
+          const file = req.files.file;
+          file.mv(`${filepath}${file.name}_${taskCreate._id}.zip`, (err) => {
+            if (err) {
+              console.log("File upload failed");
+            }
+            console.log("File Uploaded");
+          });
+        }
         res.status(201).json({
           message: "New Task Created Successfully",
         });
