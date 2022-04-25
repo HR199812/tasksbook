@@ -1,7 +1,6 @@
 const TASK = require("../models/task.model");
 const conn = require("../auth/mongoConnection");
 const fs = require("fs");
-
 const taskController = {
   //@desc Add a new Admin
   //@route POST /user/add
@@ -19,15 +18,13 @@ const taskController = {
     });
     if (taskCreate) {
       try {
-        req.files.file.mv(
-          `${filepath}${req.files.file.name}_${taskCreate._id}.zip`,
-          (err) => {
-            if (err) {
-              console.log("File upload failed");
-            }
-            console.log("File Uploaded");
+        const file = req.files.file;
+        file.mv(`${filepath}${file.name}_${taskCreate._id}.zip`, (err) => {
+          if (err) {
+            console.log("File upload failed");
           }
-        );
+          console.log("File Uploaded");
+        });
         res.status(201).json({
           message: "New Task Created Successfully",
         });
