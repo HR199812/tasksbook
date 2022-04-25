@@ -105,7 +105,7 @@ const tasks = (props) => {
           {filteredTasks.map((task, index) => {
             return (
               <div
-                className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3"
+                className="my-1 px-1 w-3/12 md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3"
                 key={index}
               >
                 {/* <!-- Article --> */}
@@ -131,8 +131,15 @@ const tasks = (props) => {
                       </a>
                     </h1>
                     {/* <p className="text-grey-darker text-sm">{task.createdAt.getMonth()}/{task.createdAt.getDate()}/{task.createdAt.getFullYear()}</p> */}
-                    <p className="text-grey-darker text-sm">{task.createdAt.split("T")[0]}</p>
+                    <p className="text-grey-darker text-sm">
+                      {task.createdAt.split("T")[0]}
+                    </p>
                   </header>
+                  <footer class="flex items-center justify-between leading-none p-2 md:p-4">
+                    <p className="text-grey-darker text-sm overflow-hidden">
+                      {task.body}
+                    </p>
+                  </footer>
                 </article>
                 {/* <!-- END Article --> */}
               </div>
