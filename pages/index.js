@@ -28,11 +28,11 @@ export default function Home() {
             </h6>
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
               A mini project using NextJs, MongoDB Atlas, Express, NodeJs and
-              Taiwind.
+              Tailwind.
             </p>
             <LINK href="/login">
               <a className="inline-flex items-center w-24 py-2 px-3 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Sigin
+                Sign In
                 <svg
                   className="ml-2 -mr-1 w-4 h-4"
                   fill="currentColor"
