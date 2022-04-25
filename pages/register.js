@@ -21,7 +21,7 @@ const register = () => {
       toast.error("Please enter a phone number", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
-    } else {
+    } else if (userphone.length > 9 && userphone.length < 17) {
       try {
         const user = {
           userphone: userphone,
@@ -49,6 +49,10 @@ const register = () => {
       } catch (error) {
         console.log(error);
       }
+    } else {
+      toast.error("Please enter a valid phone number", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     }
   };
   return (
