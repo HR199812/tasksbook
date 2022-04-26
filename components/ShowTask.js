@@ -70,6 +70,21 @@ const CreateTask = (props) => {
   useEffect(() => {
     getFileForTheTask();
   }, []);
+
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.keyCode === 27) {
+        handleChange(false);
+      }
+      if (event.keyCode === 13) {
+        UpdateTask(true);
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, []);
   return (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">

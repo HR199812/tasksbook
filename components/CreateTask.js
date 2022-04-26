@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import JSZip, { JSZipUtils } from "jszip";
 
@@ -12,6 +12,22 @@ const CreateTask = (props) => {
     category: "",
     body: "",
   });
+
+  useEffect(() => {
+    const handleEsc = (event) => {
+       if (event.keyCode === 27) {
+        handleChange(false);
+      }
+       if (event.keyCode === 13) {
+        CreateTask(event);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
+
   function handleChange(val) {
     // Here, we invoke the callback with the new value
     props.onChange(val);
@@ -44,7 +60,7 @@ const CreateTask = (props) => {
 
   const CreateTask = (e) => {
     e.preventDefault();
-    e.preventDefault();
+
     if (task.title === "" || task.category === "" || task.body === "") {
       toast.error("All The Fields are required", {
         position: toast.POSITION.BOTTOM_RIGHT,
