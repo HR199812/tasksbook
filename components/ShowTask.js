@@ -72,7 +72,7 @@ const CreateTask = (props) => {
   }, []);
 
   useEffect(() => {
-    const handleEsc = (event) => {
+    const handleKeyEvent = (event) => {
       if (event.keyCode === 27) {
         handleChange(false);
       }
@@ -80,9 +80,9 @@ const CreateTask = (props) => {
         UpdateTask(true);
       }
     };
-    window.addEventListener("keydown", handleEsc);
+    window.addEventListener("keydown", handleKeyEvent);
     return () => {
-      window.removeEventListener("keydown", handleEsc);
+      window.removeEventListener("keydown", handleKeyEvent);
     };
   }, []);
   return (

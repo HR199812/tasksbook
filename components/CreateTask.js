@@ -14,17 +14,17 @@ const CreateTask = (props) => {
   });
 
   useEffect(() => {
-    const handleEsc = (event) => {
-       if (event.keyCode === 27) {
+    const handleKeyEvent = (event) => {
+      if (event.keyCode === 27) {
         handleChange(false);
       }
-       if (event.keyCode === 13) {
+      if (event.keyCode === 13) {
         CreateTask(event);
       }
     };
-    window.addEventListener('keydown', handleEsc);
+    window.addEventListener("keydown", handleKeyEvent);
     return () => {
-      window.removeEventListener('keydown', handleEsc);
+      window.removeEventListener("keydown", handleKeyEvent);
     };
   }, []);
 
