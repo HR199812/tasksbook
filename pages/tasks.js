@@ -44,13 +44,23 @@ const tasks = (props) => {
   }
 
   function filterTaskCards() {
-    setFilteredTasks(tasks);
-    if (filter != "Select Filter") {
-      let filteredData = tasks.filter((task) => {
-        if (task.category == filter) return task;
-      });
-      setFilteredTasks(filteredData);
-    }
+
+    axios.get('http://localhost:3000/Task/getFilteredTasksForUser',{
+      params:{
+        filter: filter,
+        authorId: id
+      }
+    }).then((response)=>{
+      console.log(response);
+      setFilteredTasks(response.data);
+    }).catch((err)=>console.log(err));
+    // setFilteredTasks(tasks);
+    // if (filter != "Select Filter") {
+    //   let filteredData = tasks.filter((task) => {
+    //     if (task.category == filter) return task;
+    //   });
+    //   setFilteredTasks(filteredData);
+    // }
   }
   function filterSearchTaskCards() {
     setFilteredTasks(tasks);

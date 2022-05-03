@@ -45,6 +45,26 @@ const taskController = {
     );
     res.status(200).json(allTasks);
   },
+  getFilteredTasks:async (req, res)=>{
+    console.log(req.query);
+    try{
+      if(req.query.filter != "Select Filter"){
+        const filtereTasks = await TASK.find(
+          { $and:[{authorId: `${req.query.authorId}`}, {category:`${req.query.filter}`} ]},
+          { title: 1, body: 1, category: 1, createdAt: 1, _id: 1 }
+        );
+        res.status(200).json(filtereTasks);
+      }else{
+        const allTasks = await TASK.find(
+          { authorId: `${req.query.authorId}` },
+          { title: 1, body: 1, category: 1, createdAt: 1, _id: 1 }
+        );
+        res.status(200).json(allTasks);
+      }
+    }catch(error){
+      console.log(error);
+    }
+  },
   getFile: async (req, res) => {
     try {
       console.log(req.params);

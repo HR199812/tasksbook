@@ -23,6 +23,7 @@ const CreateTask = (props) => {
       await axios
         .get(`http://localhost:3000/Task/getFileForTask/${props.taskData._id}`)
         .then((res) => {
+          console.log(res);
           setFile(res.data);
         });
     } catch (err) {
